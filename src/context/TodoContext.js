@@ -10,8 +10,9 @@ export const todoReducer = (state, action) => {
         todos: action.payload,
       };
     case "CREATE_TODO":
+      let todos = state.todos || [];
       return {
-        todos: [action.payload, ...state.todos],
+        todos: [action.payload, ...todos],
       };
     case "DELETE_TODO":
       return {
