@@ -1,5 +1,5 @@
-import React from "react";
-import { useReducer } from "react";
+import React,{ useReducer } from "react";
+import axios from "axios";
 import useAuthContext from "../hooks/useAuthContext";
 import useTodoContext from "../hooks/useTodoContext";
 
@@ -38,6 +38,7 @@ const reducer = (state, action) => {
 function TodoForm(props) {
   const { dispatch } = useTodoContext();
   const { user } = useAuthContext();
+  const baseUrl = process.env.REACT_APP_BACKEND_URL;
 
   const [state, localDispatch] = useReducer(reducer, initialState);
   const { title, details, error, emptyFields } = state;
@@ -55,25 +56,24 @@ function TodoForm(props) {
 
     const todo = { title, details };
 
-    const response = await fetch("/api/todos", {
-      method: "POST",
-      body: JSON.stringify(todo),
+    const response = await axios.post(`${baseUrl}/api/todos`, todo, {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${user.token}`,
       },
     });
 
-    const json = await response.json();
+  
+    const json = await response.data;
 
-    if (!response.ok) {
+    if (response.statusText !== 'Created') {
       localDispatch({
         type: "error",
         error: json.error,
         emptyFields: json.emptyFields,
       });
     }
-    if (response.ok) {
+    if (response.statusText === 'Created') {
       localDispatch({ type: "success" });
 
       dispatch({ type: "CREATE_TODO", payload: json });

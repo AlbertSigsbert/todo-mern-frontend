@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import axios from 'axios';
 
 //components
 import TodoDetails from "../components/TodoDetails";
@@ -16,17 +17,18 @@ function Home(props) {
   const { user } = useAuthContext();
   const [filter, setFilter] = useState("all");
   const [query, setQuery] = useState("");
+  const baseUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     const fetchTodos = async () => {
-      const response = await fetch("/api/todos", {
+      const response = await axios.get(`${baseUrl}/api/todos`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       });
-      const json = await response.json();
+      const json = await response.data;
 
-      if (response.ok) {
+      if (response.statusText === 'OK') {
         dispatch({ type: "SET_TODOS", payload: json });
       }
     };
@@ -81,11 +83,6 @@ function Home(props) {
             todosFilter(filter).map((todo) => (
               <TodoDetails key={todo._id} todo={todo} />
             ))}
-
-        {/* {todosFilter(filter) &&
-          todosFilter(filter).map((todo) => (
-            <TodoDetails key={todo._id} todo={todo} />
-          ))} */}
       </div>
       <TodoForm />
     </div>
