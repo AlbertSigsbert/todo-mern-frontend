@@ -1,33 +1,30 @@
 import  { useState } from 'react';
 import useAuthContext from './useAuthContext';
+import axios from "axios";
 
 function useLogin(props) {
-    
     const [isLoading, setIsLoading] = useState(null);
     const [error, setError] = useState(null);
-
     const {dispatch} = useAuthContext();
+    const baseUrl = process.env.REACT_APP_BACKEND_URL;
+
 
     const login = async (email,password) => {
-     
         setIsLoading(true);
         setError(null);
 
-
-        const response = await fetch('/api/user/login',{
-            method: 'POST',
+        const response = await axios.post(`${baseUrl}/api/user/login`, { email, password},{
             headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({ email, password})
         });
 
-        const json = await response.json();
+        const json = await response.data;
 
-        if(!response.ok){
+        if(response.statusText !== 'Created'){
             setIsLoading(false);
             setError(json.error);
         }
 
-        if (response.ok) {
+        if (response.statusText === 'Created') {
             setIsLoading(false);
             setError(null)
 

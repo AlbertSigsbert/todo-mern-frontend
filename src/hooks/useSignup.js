@@ -1,35 +1,29 @@
 import  { useState } from 'react';
+import axios from "axios";
 import useAuthContext from './useAuthContext';
 
 function useSignUp(props) {
-    
     const [isLoading, setIsLoading] = useState(null);
     const [error, setError] = useState(null);
-
     const {dispatch} = useAuthContext();
+    const baseUrl = process.env.REACT_APP_BACKEND_URL;
 
     const signup = async (email,password) => {
-     
         setIsLoading(true);
         setError(null);
 
-
-        const response = await fetch('/api/user/signup',{
-            method: 'POST',
+        const response = await axios.post(`${baseUrl}/api/user/signup`,{ email, password},{
             headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({ email, password})
         });
 
         const json = await response.json();
 
-        if(!response.ok){
+        if(response.statusText !== 'Created'){
             setIsLoading(false);
             setError(json.error);
         }
 
-        if (response.ok) {
-           
-
+        if (response.statusText === 'Created') {
             // Save auth user to local storage
             localStorage.setItem('user', JSON.stringify(json));
 
