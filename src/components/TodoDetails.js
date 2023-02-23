@@ -53,6 +53,28 @@ function TodoDetails({ todo }) {
       dispatch({ type: "DELETE_TODO", payload: json });
     }
   };
+
+  const handleShare = async () => {
+    if (!user) {
+      return;
+    }
+
+    try {
+      const response = await axios.get(`${baseUrl}/api/todos/send-invite/${todo._id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const json = await response.data;
+
+      alert(json.message);
+  
+    } catch (error) {
+      console.log(error);
+    }
+   
+   
+  }
   return (
     <div className="todo-details">
       <h4>{todo.title}</h4>
@@ -78,6 +100,9 @@ function TodoDetails({ todo }) {
             check
           </span>
         )}
+        <span className="material-icons-outlined" onClick={handleShare}>
+          share
+        </span>
         <span className="material-icons-outlined" onClick={handleDelete}>
           delete
         </span>
