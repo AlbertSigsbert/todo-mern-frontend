@@ -12,18 +12,13 @@ function useSignUp(props) {
         setIsLoading(true);
         setError(null);
 
-        const response = await axios.post(`${baseUrl}/api/user/signup`,{ email, password},{
-            headers: { 'Content-Type': 'application/json'},
-        });
+        try {
+            const response = await axios.post(`${baseUrl}/api/user/signup`,{ email, password},{
+                headers: { 'Content-Type': 'application/json'},
+            });
+    
+            const json = await response.data;
 
-        const json = await response.json();
-
-        if(response.statusText !== 'Created'){
-            setIsLoading(false);
-            setError(json.error);
-        }
-
-        if (response.statusText === 'Created') {
             // Save auth user to local storage
             localStorage.setItem('user', JSON.stringify(json));
 
@@ -32,8 +27,14 @@ function useSignUp(props) {
 
             setIsLoading(false);
             setError(null)
-
+            
+        } catch (error) {
+            // console.log(error.response.data.error);
+            setIsLoading(false);
+            setError(error.response.data.error);
         }
+        
+
 
     }
 

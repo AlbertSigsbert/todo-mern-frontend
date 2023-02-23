@@ -13,18 +13,13 @@ function useLogin(props) {
         setIsLoading(true);
         setError(null);
 
-        const response = await axios.post(`${baseUrl}/api/user/login`, { email, password},{
-            headers: { 'Content-Type': 'application/json'},
-        });
+        try {
+            const response = await axios.post(`${baseUrl}/api/user/login`, { email, password},{
+                headers: { 'Content-Type': 'application/json'},
+            });
+    
+            const json = await response.data;
 
-        const json = await response.data;
-
-        if(response.statusText !== 'Created'){
-            setIsLoading(false);
-            setError(json.error);
-        }
-
-        if (response.statusText === 'Created') {
             setIsLoading(false);
             setError(null)
 
@@ -33,9 +28,17 @@ function useLogin(props) {
 
             //Update auth context
             dispatch({ type: 'LOGIN', payload: json})
-
+            
+        } catch (error) {
+            setIsLoading(false);
+            setError(error.response.data.error);
         }
 
+       ;
+
+      
+
+    
     }
 
     return { login, isLoading, error}

@@ -56,27 +56,27 @@ function TodoForm(props) {
 
     const todo = { title, details };
 
-    const response = await axios.post(`${baseUrl}/api/todos`, todo, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${user.token}`,
-      },
-    });
-
-  
-    const json = await response.data;
-
-    if (response.statusText !== 'Created') {
-      localDispatch({
-        type: "error",
-        error: json.error,
-        emptyFields: json.emptyFields,
+    try {
+      const response = await axios.post(`${baseUrl}/api/todos`, todo, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${user.token}`,
+        },
       });
-    }
-    if (response.statusText === 'Created') {
+  
+      const json = await response.data;
+
       localDispatch({ type: "success" });
 
       dispatch({ type: "CREATE_TODO", payload: json });
+
+    } catch (error) {
+      
+      localDispatch({
+        type: "error",
+        error: error.response.data.error,
+        emptyFields: error.response.data.emptyFields,
+      });
     }
   };
   return (
