@@ -28,9 +28,8 @@ function Home(props) {
       });
       const json = await response.data;
 
-      console.log(response);
 
-      if (response.statusText === 'OK') {
+      if (response.status === 200) {
         dispatch({ type: "SET_TODOS", payload: json });
       }
     };

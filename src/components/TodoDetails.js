@@ -29,7 +29,8 @@ function TodoDetails({ todo }) {
 
     const json = await response.data;
 
-    if (response.statusText === 'OK') {
+
+    if (response.status === 200) {
       dispatch({ type: "UPDATE_TODO", payload: json });
     }
   };
@@ -48,7 +49,8 @@ function TodoDetails({ todo }) {
 
     const json = await response.data;
 
-    if (response.statusText === 'OK') {
+
+    if (response.status === 200 ) {
       dispatch({ type: "DELETE_TODO", payload: json });
     }
   };
