@@ -27,7 +27,6 @@ function TodoDetails({ todo }) {
       }
     );
 
-
     const json = await response.data;
 
     if (response.statusText === 'OK') {

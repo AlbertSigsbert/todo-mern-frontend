@@ -28,6 +28,8 @@ function Home(props) {
       });
       const json = await response.data;
 
+      console.log(response);
+
       if (response.statusText === 'OK') {
         dispatch({ type: "SET_TODOS", payload: json });
       }
