@@ -40,10 +40,10 @@ header a {
   gap: 100px;
   grid-template-areas: "todolist todoform";
 }
-.todos{
+.todos {
   grid-area: todolist;
 }
-.create{
+.create {
   grid-area: todoform;
 }
 .todo-details {
@@ -78,6 +78,11 @@ header a {
   padding: 6px;
   border-radius: 50%;
   color: #333;
+}
+
+.todo-details .completed{
+  background: var(--primary) !important;
+  color: #f1f1f1 !important;
 }
 
 /* new todo form */
@@ -158,43 +163,54 @@ form.login {
   border-radius: 4px;
   margin-left: 10px;
 }
-.active-filter{
+.active-filter {
   background: var(--primary) !important;
   color: #fff !important;
 }
 
-.flex-container{
+.flex-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+.flex-container input {
+  margin: 0;
+}
+
 @media (max-width: 768px) {
-  .flex-container{
-    flex-direction: column;
-  }
   .home {
     grid-template-columns: 1fr;
-    grid-template-areas: 
-    "todoform"
-    "todolist";
+    grid-template-areas:
+      "todoform"
+      "todolist";
     gap: 20px;
   }
-  .create{
-   margin-bottom: 2rem;
+  .create {
+    margin-bottom: 2rem;
+  }
 }
+@media (max-width: 520px) {
+  .flex-container {
+    flex-direction: column;
+    align-items: normal;
+  }
+  .flex-container input {
+    margin: 20px 0;
+  }
 }
 @media (max-width: 480px) {
-  header .container{
+  header .container {
     flex-wrap: wrap;
   }
- header, header h1{
-  font-size: small;
- }
+  header,
+  header h1 {
+    font-size: small;
+  }
 
- nav button, .todo-filters button{
-   padding: 4px 8px;
-   font-size: small;
- }
-
+  nav button,
+  .todo-filters button {
+    padding: 4px 8px;
+    font-size: small;
+  }
 }

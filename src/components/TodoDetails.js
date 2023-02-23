@@ -93,14 +93,16 @@ function TodoDetails({ todo }) {
         {todo.isCompleted ? "Yes" : "No"}
       </p>
       <div className="icons">
-        {!todo.isCompleted && (
+        
           <span
-            className="material-icons-outlined"
+            className={todo.isCompleted ? "material-icons-outlined completed": "material-icons-outlined"}
             onClick={() => handleUpdate(todo._id)}
           >
             check
           </span>
-        )}
+        
+      
+
         <span className="material-icons-outlined" onClick={handleShare}>
           share
         </span>
